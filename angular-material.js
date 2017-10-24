@@ -25688,7 +25688,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
 
     updateModelValidators();
 
-    if (selectedItem) {
+    if (selectedItem && previousSelectedItem) {
       getDisplayValue(selectedItem).then(function (val) {
         $scope.searchText = val;
         handleSelectedItemChange(selectedItem, previousSelectedItem);
@@ -25904,8 +25904,9 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * @returns {*}
    */
   function getDisplayValue (item) {
-    return $q.when(getItemText(item) || item).then(function(itemText) {
-      if (itemText && !angular.isString(itemText)) {
+    var value = getItemText(item) || '';
+    var cond = typeof value == 'string' && !value ? value : (value || item);
+    return $q.when(value || item).then(function(itemText) {
         $log.warn('md-autocomplete: Could not resolve display value to a string. ' +
           'Please check the `md-item-text` attribute.');
       }
