@@ -25904,7 +25904,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    * @returns {*}
    */
   function getDisplayValue (item) {
-    return $q.when(getItemText(item) || item).then(function(itemText) {
+    return $q.when(typeof item == 'string' && !item ? item : (getItemText(item) || item)).then(function(itemText) {
       if (itemText && !angular.isString(itemText)) {
         $log.warn('md-autocomplete: Could not resolve display value to a string. ' +
           'Please check the `md-item-text` attribute.');
