@@ -31076,7 +31076,8 @@ function MdContactChips($mdTheming, $mdUtil) {
         dateFilter: '=mdDateFilter',
         isOpen: '=?mdIsOpen',
         debounceInterval: '=mdDebounceInterval',
-        dateLocale: '=mdDateLocale'
+        dateLocale: '=mdDateLocale',
+        ngModel: '=ngModel',
       },
       controller: DatePickerCtrl,
       controllerAs: 'ctrl',
@@ -31560,7 +31561,7 @@ function MdContactChips($mdTheming, $mdUtil) {
   /** Clears any error flags set by `updateErrorState`. */
   DatePickerCtrl.prototype.clearErrorState = function() {
     this.inputContainer.classList.remove(INVALID_CLASS);
-    ['mindate', 'maxdate', 'filtered', 'valid'].forEach(function(field) {
+    ['mindate', 'maxdate', 'filtered', 'valid', 'date'].forEach(function(field) {
       this.ngModelCtrl.$setValidity(field, true);
     }, this);
   };
@@ -31589,8 +31590,9 @@ function MdContactChips($mdTheming, $mdUtil) {
 
     // The datepicker's model is only updated when there is a valid input.
     if (isValidInput) {
-      this.setModelValue(parsedDate);
       this.date = parsedDate;
+      this.setModelValue(parsedDate);
+      this.ngModel = parsedDate;
     }
 
     this.updateErrorState(parsedDate);
@@ -31850,6 +31852,7 @@ function MdContactChips($mdTheming, $mdUtil) {
   DatePickerCtrl.prototype.setModelValue = function(value) {
     var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
     this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone));
+    this.ngModelCtrl.$render();
   };
 
   /**
