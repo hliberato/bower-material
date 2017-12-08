@@ -31076,7 +31076,8 @@ function MdContactChips($mdTheming, $mdUtil) {
         dateFilter: '=mdDateFilter',
         isOpen: '=?mdIsOpen',
         debounceInterval: '=mdDebounceInterval',
-        dateLocale: '=mdDateLocale'
+        dateLocale: '=mdDateLocale',
+        ngModel: '=ngModel',
       },
       controller: DatePickerCtrl,
       controllerAs: 'ctrl',
@@ -31849,7 +31850,10 @@ function MdContactChips($mdTheming, $mdUtil) {
    */
   DatePickerCtrl.prototype.setModelValue = function(value) {
     var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
-    this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone));
+    var date = this.ngDateFilter(value, 'yyyy-MM-dd', timezone);
+    var formatDate = this.$mdDateLocale.formatDate(value);
+    this.ngModelCtrl.$setViewValue(formatDate);
+    this.ngModel = value;
   };
 
   /**
